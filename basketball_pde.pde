@@ -49,7 +49,7 @@ void setup()
          int len = a.getName().length() - b.getName().length();
          if(len == 0)
          {
-          
+           return a.getName().compareTo(b.getName());
          }
          else 
          {
@@ -61,7 +61,7 @@ void setup()
   {
      if(file.isFile())
      {
-        println(file.getName());
+        load_event(game, file.getName());
      }
   }
   
@@ -113,9 +113,9 @@ void load_games(Game game)
   game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
 }
 
-void load_event(Game game, int eventid)
+void load_event(Game game, String eventid)
 {
-  eventstable = loadTable("/games/00" + game.gameid + "/2.csv");   //load an event
+  eventstable = loadTable("/games/00" + game.gameid + "/" + eventid);   //load an event
 
   int h_cnt = 0, v_cnt = 0, pid; 
 
