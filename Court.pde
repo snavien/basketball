@@ -37,20 +37,20 @@ class Court{
       beginShape();
     
       int w = 752, h = 394;
-      strokeWeight(1);
+      strokeWeight(2);
       fill(255);
       rect(10,10, 752, 404);
       fill(40,40,40);
       stroke(0);
       rect (20, 10, w - 20, h);                 // court
       
-      arc (435, 263, 190, 190, HALF_PI, PI+HALF_PI);      // right 3 point
-      arc (65, 263, 190, 190, radians(270), radians(450));   // left 3 point
+      //arc (435, 263, 190, 190, HALF_PI, PI+HALF_PI);      // right 3 point
+      //arc (65, 263, 190, 190, radians(270), radians(450));   // left 3 point
       
       fill (12, 129, 200);                  // center circle
       ellipse (w/2 + 20, 197, 48, 48); 
       fill (255);
-      ellipse (w/2 + 20, 197, 24, 24);  
+      ellipse (w/2 + 20, 197, 16, 16);  
       
       line (376 + 20, 10, 376 + 20, 394 + 10);
       fill (12, 129, 200);                  // half-court
@@ -62,20 +62,23 @@ class Court{
       ellipse (31 + 20, h/2, 12, 12);                // left net
       ellipse (w - 12 - 20, h/2, 12, 12);                // right net
       
-      rect (52, 135, 10, 10);                  // left player1
-      rect (65, 135, 10, 10);                  // left player2
-      rect (78, 135, 10, 10);                  // left player3
-      rect (91, 135, 10, 10);                  // left player4
-      rect (104, 135, 10, 10);                // left player5
-      rect (214, 126, 65, 20);                // subbing area
-      rect (438, 135, 10, 10);                // right player1
-      rect (425, 135, 10, 10);                // right player2
-      rect (412, 135, 10, 10);                // right player3
-      rect (399, 135, 10, 10);                // right player4
-      rect (386, 135, 10, 10);                // right player5
+      //rect (52, 135, 10, 10);                  // left player1
+      //rect (65, 135, 10, 10);                  // left player2
+      //rect (78, 135, 10, 10);                  // left player3
+      //rect (91, 135, 10, 10);                  // left player4
+      //rect (104, 135, 10, 10);                // left player5
+      //rect (214, 126, 65, 20);                // subbing area
+      //rect (438, 135, 10, 10);                // right player1
+      //rect (425, 135, 10, 10);                // right player2
+      //rect (412, 135, 10, 10);                // right player3
+      //rect (399, 135, 10, 10);                // right player4
+      //rect (386, 135, 10, 10);                // right player5
       fill (255);                        // white fill
       arc (w - 152 , h/2, 96, 96, HALF_PI, PI+HALF_PI);      // tipoff  free throw right
       arc (20 + 152, h/2, 96, 96, radians(270), radians(450));    // tipoff free throw area left
+      noFill();
+      arc (20 + 152, h/2, 96, 96, HALF_PI, PI+HALF_PI);      // tipoff  free throw right
+      arc (w - 152, h/2, 96, 96, radians(270), radians(450));    // tipoff free throw area left
       endShape();
     }
 }

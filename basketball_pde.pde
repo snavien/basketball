@@ -18,7 +18,7 @@ ArrayList<Double> ball_heights,
   bpy, 
   posx, 
   posy;
-  
+
 
 void setup()
 {
@@ -86,35 +86,25 @@ void setup()
   Set pids = new HashSet<Integer>();
   for (TableRow row : eventstable.rows()) 
   {     
-    println("mc: " + moment_cnt + " moment " + row.getInt(6));
-    if(row.getInt(6) == moment_cnt)                             // iterate through moments
-    { 
-      if(!m_same)
-         print("!");
-    }
-    else
+    if (row.getInt(6) != moment_cnt)                             // iterate through moments
     {
-      print("~");
-        if (row.getInt(1) == -1 && row.getInt(2) == -1) //check if this point has ball update
-        {
-           ball_heights.add(moment_cnt, (double)row.getInt(5));
-           bpx.add(moment_cnt, (double)row.getInt(3));
-           bpy.add(moment_cnt, (double)row.getInt(4));        
-        }
-        else{
-           ball_heights.add(moment_cnt, (double)-1.0);
-           bpx.add(moment_cnt, (double)-1.0);
-           bpy.add(moment_cnt, (double)-1.0); 
-        }
+      if (row.getInt(1) == -1 && row.getInt(2) == -1) //check if this point has ball update
+      {
+        ball_heights.add(moment_cnt, (double)row.getInt(5));
+        bpx.add(moment_cnt, (double)row.getInt(3));
+        bpy.add(moment_cnt, (double)row.getInt(4));
+      } else {
+        ball_heights.add(moment_cnt, (double)-1.0);
+        bpx.add(moment_cnt, (double)-1.0);
+        bpy.add(moment_cnt, (double)-1.0);
+      }
       m_same = false;
-      moment_cnt++; 
-
+      moment_cnt++;
     }
     if (row.getInt(1) != -1 && row.getInt(2) != -1)            //ball is not there, want moment to be -1
     {
       pids.add(row.getInt(2)); // add player ids
     }
-   
   }
   Iterator<Integer> it = pids.iterator();
 
@@ -156,8 +146,8 @@ void setup()
       tid = row.getInt(1);
     }
   }
-  
-   
+
+
   if (tid == hometeamid) {
     home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
     hct++;
@@ -187,11 +177,17 @@ void timeUpdated(DateTime startDateTime, DateTime endDateTime) {
 // Forwarding of key and mouse events
 
 
-int [] m_p= {0,0};
-void draw() {
+int [] m_p= {0, 0};
+void draw() 
+{
+}
+
+void draw_game_event()
+{
+  clear();
   court.display();
 
-  clock.display();
+  //clock.display();
 
   hs1.update(m_p);
   hs1.display();
