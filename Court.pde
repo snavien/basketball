@@ -48,7 +48,9 @@ class Court{
       arc (65, 263, 190, 190, radians(270), radians(450));   // left 3 point
       
       fill (12, 129, 200);                  // center circle
-      ellipse (376 + 20, 197, 96, 96);  
+      ellipse (w/2 + 20, 197, 48, 48); 
+      fill (255);
+      ellipse (w/2 + 20, 197, 24, 24);  
       
       line (376 + 20, 10, 376 + 20, 394 + 10);
       fill (12, 129, 200);                  // half-court
