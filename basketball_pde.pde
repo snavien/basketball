@@ -39,6 +39,31 @@ void setup()
   Game game = new Game();
   load_games(game);
   
+  println(dataPath(""));
+  File dir = new File(dataPath("") + "/games/00" + game.gameid+"/");
+  println(dir);
+  File[] filesList = dir.listFiles();
+  Arrays.sort(filesList, 
+    new Comparator<File>(){
+      public int compare(File a, File b){
+         int len = a.getName().length() - b.getName().length();
+         if(len == 0)
+         {
+          
+         }
+         else 
+         {
+            return len; 
+         }
+      }
+    });
+  for(File file: filesList)
+  {
+     if(file.isFile())
+     {
+        println(file.getName());
+     }
+  }
   
   playerstable = loadTable("players.csv", "header");       // list of teams
 
@@ -88,9 +113,9 @@ void load_games(Game game)
   game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
 }
 
-void load_event(Game game)
+void load_event(Game game, int eventid)
 {
-   eventstable = loadTable("/games/00" + game.gameid + "/2.csv");   //load an event
+  eventstable = loadTable("/games/00" + game.gameid + "/2.csv");   //load an event
 
   int h_cnt = 0, v_cnt = 0, pid; 
 
@@ -202,11 +227,6 @@ void draw_game_event()
 
   ball.update(m_p);
   ball.display();
-
-  // Get the position of the img1 scrollbar
-  // and convert to a value to display the img1 image 
-
-
 
   stroke(0);
   line(0, height - 30, width, height - 30);
