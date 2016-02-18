@@ -22,8 +22,8 @@ class Ball{
        x = bpx.get(m);
        y = bpy.get(m);
        h = hgt.get(m);
-       offx = 50 * 8;
-       offy = 150 * 8;
+       offx = 20;
+       offy = 10;
        max_height = mx;
        //moment_list = ml;
    }
@@ -56,7 +56,7 @@ class Ball{
      beginShape();
      noStroke();
      fill(255, 151, 2);
-     ellipse(offx + (float)(x * (400/94.0)), offy + (float)(y * (225/50.0)), (float)(40 * (h/max_height)), (float)(40 *(h/max_height)));  
+     ellipse(offx + (float)(x * (752/94.0)), offy + (float)(y * (394/50.0)), (float)(40 * (h/max_height)), (float)(40 *(h/max_height)));  
      endShape();
    }
 }

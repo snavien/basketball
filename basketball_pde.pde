@@ -22,7 +22,7 @@ ArrayList<Double> ball_heights,
 
 void setup()
 {
-  size(500, 500);      // always go first
+  size(800, 800);      // always go first
 
   surface.setResizable(true);
   home = new Player[5];

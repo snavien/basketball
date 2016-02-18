@@ -11,8 +11,8 @@ class Player{
      posys = pys;
      px = pxs.get(0);
      py = pys.get(0);
-     offx = 50;
-     offy = 150;
+     offx = 20;
+     offy = 10;
      r = red;
      g = green;
      b = blue;
@@ -42,7 +42,9 @@ class Player{
      stroke(255);
      strokeWeight(1);
      fill(r,g,b);
-     ellipse(offx + (px * (400/94.0)), offy + (py * (225/50.0)), 9, 9);  
+     
+
+     ellipse(offx + (px * (752/94.0)), offy + (py * (394/50.0)), 9, 9);  
                    
      endShape();
    }

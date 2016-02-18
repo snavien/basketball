@@ -36,23 +36,30 @@ class Court{
       //endShape();
       beginShape();
     
+      int w = 752, h = 394;
       strokeWeight(1);
       fill(255);
-      rect(10,10, 772, 404);
+      rect(10,10, 752, 404);
       fill(40,40,40);
       stroke(0);
-      rect (10, 10, 752, 394);                 // court
+      rect (20, 10, w - 20, h);                 // court
+      
       arc (435, 263, 190, 190, HALF_PI, PI+HALF_PI);      // right 3 point
       arc (65, 263, 190, 190, radians(270), radians(450));   // left 3 point
+      
       fill (12, 129, 200);                  // center circle
-      ellipse (280, 197, 96, 96);            
-      line (246, 150, 246, 375);
+      ellipse (376 + 20, 197, 96, 96);  
+      
+      line (376 + 20, 10, 376 + 20, 394 + 10);
       fill (12, 129, 200);                  // half-court
-      rect (10, 149, 152, 96);                  // left rectangle/key
-      rect (358, 149, 152, 96);                // right rectangle/key
-      fill (0);                                // net  
-      ellipse (57, 263, 10, 10);                // left net
-      ellipse (443, 263, 10, 10);                // right net
+      
+      rect (20, 149, 152, 96);                  // left rectangle/key
+      rect (w - 152, 149, 152, 96);           // right rectangle/key
+      
+      fill (0);                                 // net  
+      ellipse (31 + 20, h/2, 12, 12);                // left net
+      ellipse (w - 12 - 20, h/2, 12, 12);                // right net
+      
       rect (52, 135, 10, 10);                  // left player1
       rect (65, 135, 10, 10);                  // left player2
       rect (78, 135, 10, 10);                  // left player3
@@ -65,8 +72,8 @@ class Court{
       rect (399, 135, 10, 10);                // right player4
       rect (386, 135, 10, 10);                // right player5
       fill (255);                        // white fill
-      arc (375, 263, 50, 50, HALF_PI, PI+HALF_PI);      // tipoff  free throw right
-      arc (125, 263, 50, 50, radians(270), radians(450));    // tipoff free throw area left
+      arc (w - 152 , h/2, 96, 96, HALF_PI, PI+HALF_PI);      // tipoff  free throw right
+      arc (20 + 152, h/2, 96, 96, radians(270), radians(450));    // tipoff free throw area left
       endShape();
     }
 }
