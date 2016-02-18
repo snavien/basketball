@@ -12,10 +12,10 @@ class Game
     hometeamid = htid;
     visitorteamid = vtid;
   
-    ht_name,
-    ht_abbr,
-    vt_name,
-    vt_abbr;
+    ht_name = htn;
+    ht_abbr = hta;
+    vt_name = vtn;
+    vt_abbr  = vta;
     
     
   }
