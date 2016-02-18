@@ -41,7 +41,56 @@ void setup()
   
   
   playerstable = loadTable("players.csv", "header");       // list of teams
-  eventstable = loadTable("/games/00" + game.gameid + "/2.csv");   //load an event
+
+  surface.setResizable(true);
+
+  hs1 = new HScrollbar(0, height - 30, width, 16, 16);
+}
+
+void load_games(Game game)
+{
+  //PROCESS DATA
+  gamestable = loadTable("games.csv", "header"); // list of games
+
+  int gameid = 0, hometeamid = 0, visitorteamid = 0;
+  for (TableRow row : gamestable.rows()) 
+  {        
+    gameid = row.getInt("gameid");                    // load gameid
+    hometeamid = row.getInt("hometeamid");           // load home team id
+    visitorteamid = row.getInt("visitorteamid");     // load visitor team id
+
+    println("This game has an ID of " + gameid);
+    break;
+  }
+  teamstable = loadTable("team.csv", "header");           // list of teams
+
+  String  ht_name = new String(), 
+    ht_abbr = new String(), 
+    vt_name = new String(), 
+    vt_abbr = new String();
+  for (TableRow row : teamstable.rows()) 
+  {        
+    if (row.getInt("teamid") == hometeamid)
+    {
+      ht_name = row.getString("name");
+      ht_abbr = row.getString("abbreviation");
+    }
+    if (row.getInt("teamid") == visitorteamid)
+    {
+      vt_name = row.getString("name");
+      vt_abbr = row.getString("abbreviation");
+    }
+  }
+
+  println("The home team: " + ht_name + ", "+  ht_abbr);
+  println("The visitor team: " + vt_name + ", "+  vt_abbr);
+
+  game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
+}
+
+void load_event(Game game)
+{
+   eventstable = loadTable("/games/00" + game.gameid + "/2.csv");   //load an event
 
   int h_cnt = 0, v_cnt = 0, pid; 
 
@@ -54,7 +103,7 @@ void setup()
   {     
     if (row.getInt(6) != moment_cnt)                             // iterate through moments
     {
-      if (row.getInt(1) == -1 && row.getInt(2) == -1) //check if this point has ball update
+      if (row.getInt(1) == -1 && row.getInt(2) == -1)            //check if this point has ball update
       {
         ball_heights.add(moment_cnt, (double)row.getInt(5));
         bpx.add(moment_cnt, (double)row.getInt(3));
@@ -104,7 +153,6 @@ void setup()
   for (TableRow row : eventstable.rows()) 
   {        
     if (row.getInt(2) == curr && row.getInt(3) != -1) {
-      //println(row.getFloat(3));
       playerx.add(row.getFloat(3));
       playery.add(row.getFloat(4));
       tid = row.getInt(1);
@@ -126,54 +174,8 @@ void setup()
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);///, moments);
 
   println("max ball height: " + max_height);
-
-  surface.setResizable(true);
-
-  hs1 = new HScrollbar(0, height - 30, width, 16, 16);
+ 
 }
-
-void load_games(Game game)
-{
-  //PROCESS DATA
-  gamestable = loadTable("games.csv", "header"); // list of games
-
-  int gameid = 0, hometeamid = 0, visitorteamid = 0;
-  for (TableRow row : gamestable.rows()) 
-  {        
-    gameid = row.getInt("gameid");                    // load gameid
-    hometeamid = row.getInt("hometeamid");           // load home team id
-    visitorteamid = row.getInt("visitorteamid");     // load visitor team id
-
-    println("This game has an ID of " + gameid);
-    break;
-  }
-  teamstable = loadTable("team.csv", "header");           // list of teams
-
-  String  ht_name = new String(), 
-    ht_abbr = new String(), 
-    vt_name = new String(), 
-    vt_abbr = new String();
-  for (TableRow row : teamstable.rows()) 
-  {        
-    if (row.getInt("teamid") == hometeamid)
-    {
-      ht_name = row.getString("name");
-      ht_abbr = row.getString("abbreviation");
-    }
-    if (row.getInt("teamid") == visitorteamid)
-    {
-      vt_name = row.getString("name");
-      vt_abbr = row.getString("abbreviation");
-    }
-  }
-
-  println("The home team: " + ht_name + ", "+  ht_abbr);
-  println("The visitor team: " + vt_name + ", "+  vt_abbr);
-
-  game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
-}
-
-
 
 int [] m_p= {0, 0};
 void draw() 
