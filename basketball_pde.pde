@@ -36,12 +36,12 @@ void setup()
   home = new Player[5];
   visitor = new Player[5];
 
-  int[] ids = new int[3];
-  load_games(ids);
+  Game game = new Game();
+  load_games(game);
   
   
   playerstable = loadTable("players.csv", "header");       // list of teams
-  eventstable = loadTable("/games/00" + gameid + "/2.csv");   //load an event
+  eventstable = loadTable("/games/00" + game.gameid + "/2.csv");   //load an event
 
   int h_cnt = 0, v_cnt = 0, pid; 
 
@@ -87,12 +87,11 @@ void setup()
         tid = row.getInt(1);
       }
     }
-    if (tid == hometeamid) {
+    if (tid == game.hometeamid) {
       home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
       hct++;
-    } else {
-      //println("vct " + vct);
-      //println("tidd " + tid);
+    } else 
+    {
       visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
       vct++;
     }
@@ -113,12 +112,10 @@ void setup()
   }
 
 
-  if (tid == hometeamid) {
+  if (tid == game.hometeamid) {
     home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
     hct++;
   } else {
-    //println("vct " + vct);
-    //println("tidd " + tid);
     visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
     vct++;
   }
@@ -135,7 +132,7 @@ void setup()
   hs1 = new HScrollbar(0, height - 30, width, 16, 16);
 }
 
-Game load_games(Game game)
+void load_games(Game game)
 {
   //PROCESS DATA
   gamestable = loadTable("games.csv", "header"); // list of games
@@ -173,8 +170,7 @@ Game load_games(Game game)
   println("The home team: " + ht_name + ", "+  ht_abbr);
   println("The visitor team: " + vt_name + ", "+  vt_abbr);
 
-  game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
-  return game;
+  game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
 }
 
 

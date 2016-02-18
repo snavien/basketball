@@ -6,7 +6,7 @@ class Game
            ht_abbr,
            vt_name,
            vt_abbr;
-  Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta)
+  void set_game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta)
   {
     gameid = gid;
     hometeamid = htid;
