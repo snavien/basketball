@@ -25,8 +25,8 @@ void setup()
   size(800, 800);      // always go first
 
   surface.setResizable(true);
-  home = new Player[5];
-  visitor = new Player[5];
+  home = new Player[8];
+  visitor = new Player[8];
 
   smooth();
 
@@ -115,6 +115,7 @@ void load_games(Game game)
 
 void load_event(Game game, String eventid)
 {
+  println(eventid);
   eventstable = loadTable("/games/00" + game.gameid + "/" + eventid);   //load an event
 
   int h_cnt = 0, v_cnt = 0, pid; 
@@ -161,37 +162,46 @@ void load_event(Game game, String eventid)
         tid = row.getInt(1);
       }
     }
-    if (tid == game.hometeamid) {
+    if (tid == game.hometeamid && hct <= 4) {
+      println(hct);
+      println(game.hometeamid);
       home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
+      println(playerx);
+      println((home[hct]).px);
       hct++;
+      
     } else 
     {
-      visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
-      vct++;
+      if(vct <= 4)
+      {
+        
+        visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
+        vct++;
+      }
     }
 
     curr = it.next();
   }
   while (it.hasNext());
-  ArrayList playerx = new ArrayList<Float>(), playery = new ArrayList<Float>();
+  //ArrayList playerx = new ArrayList<Float>(), playery = new ArrayList<Float>();
 
-  for (TableRow row : eventstable.rows()) 
-  {        
-    if (row.getInt(2) == curr && row.getInt(3) != -1) {
-      playerx.add(row.getFloat(3));
-      playery.add(row.getFloat(4));
-      tid = row.getInt(1);
-    }
-  }
+  //for (TableRow row : eventstable.rows()) 
+  //{        
+  //  if (row.getInt(2) == curr && row.getInt(3) != -1) {
+  //    playerx.add(row.getFloat(3));
+  //    playery.add(row.getFloat(4));
+  //    tid = row.getInt(1);
+  //  }
+  //}
 
 
-  if (tid == game.hometeamid) {
-    home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
-    hct++;
-  } else {
-    visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
-    vct++;
-  }
+  //if (tid == game.hometeamid) {
+  //  home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
+  //  hct++;
+  //} else {
+  //  visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
+  //  vct++;
+  //}
   double max_height = Collections.max(ball_heights);
 
   println(Arrays.toString(pids.toArray()));
