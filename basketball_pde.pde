@@ -1,5 +1,7 @@
 //TODO: Map moment to players and ball
-
+int STATE0 = 0;
+Game curr_game;
+int game_index = 0;
 
 import java.util.*;
 Table   gamestable, 
@@ -15,32 +17,25 @@ ArrayList<Game> games;
 
 void setup()
 {
-  size(800, 800);      // always go first
+  size(800, 650);      // always go first
 
   surface.setResizable(true);
-
-
   smooth();
 
   court = new Court();
-  
   clock = new Clock();
+  Game game;
 
-  Game game = new Game();
- 
   games = new ArrayList<Game>();
- 
-  load_games(game);
-  populate_events(game, games);
+  load_games();
   
   playerstable = loadTable("players.csv", "header");       // list of teams
-
   surface.setResizable(true);
 
   hs1 = new HScrollbar(0, height - 30, width, 16, 16);
 }
 
-void load_games(Game game)
+void load_games()
 {
   //PROCESS DATA
   gamestable = loadTable("games.csv", "header"); // list of games
@@ -51,8 +46,7 @@ void load_games(Game game)
     gameid = row.getInt("gameid");                    // load gameid
     hometeamid = row.getInt("hometeamid");           // load home team id
     visitorteamid = row.getInt("visitorteamid");     // load visitor team id
-
-    println("This game has an ID of " + gameid);
+    
     
     teamstable = loadTable("team.csv", "header");           // list of teams
 
@@ -60,6 +54,7 @@ void load_games(Game game)
       ht_abbr = new String(), 
       vt_name = new String(), 
       vt_abbr = new String();
+  
     for (TableRow trow : teamstable.rows()) 
     {        
       if (trow.getInt("teamid") == hometeamid)
@@ -73,12 +68,15 @@ void load_games(Game game)
         vt_abbr = trow.getString("abbreviation");
       }
     }
-  
-  //  println("The home team: " + ht_name + ", "+  ht_abbr);
-  //  println("The visitor team: " + vt_name + ", "+  vt_abbr);
-  
-    game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
-    games.add(game);
+    
+    println("gameid: " + gameid);
+    println(ht_name);
+    println(vt_name);
+    Game game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,vt_abbr);
+    
+    curr_game = new Game();
+    populate_events(game, games);
+    curr_game = games.get(0);    
 
   }
 
@@ -124,7 +122,7 @@ void initialize_event(Game game, String eventid)
   ArrayList<Double> bpx,
                     bpy,
                     ball_heights;           
-  println("eventid: " + eventid);
+  //println("eventid: " + eventid);
   eventstable = loadTable("/games/00" + game.gameid + "/" + eventid);   //load an event
 
 
@@ -223,9 +221,8 @@ void initialize_event(Game game, String eventid)
   while(it.hasNext());
   
 
-  println("ball heights: " + ball_heights.size());
+  //println("ball heights: " + ball_heights.size());
   double max_height = Collections.max(ball_heights);
-
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
@@ -235,6 +232,56 @@ void initialize_event(Game game, String eventid)
  
 }
 
+void keyPressed()
+{
+ curr_game = new Game();
+
+ if(keyCode == RIGHT)
+ {
+   println("ALDSKFJSAJKFFLS");
+    game_index++; 
+ }
+ if(keyCode == LEFT) 
+ {
+    game_index--;
+ }
+ if(game_index >= 0 && game_index <= 81)
+ {
+   print("POOP");
+   curr_game = games.get(game_index);
+   print(curr_game.ht_abbr);
+ }
+ if(keyCode == ENTER)
+ {
+    
+ }
+ 
+}
+
 void draw() 
 {
+  int state = 0;
+  switch(state)
+  {
+     case 0:
+       curr_game = games.get(0);
+       PImage img, h_logo, v_logo, basketball;
+       img = loadImage(sketchPath() + "/images/splash.png");
+       h_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.ht_abbr +".png");
+       v_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.vt_abbr +".png");
+       basketball = loadImage(sketchPath() +"/images/basketball.png");
+       image(img, 0, 0,width, height);
+       noStroke();
+       
+       tint(225,127);
+       image(basketball, 45,35, 200, 200);
+       image(basketball, 550, 400, 200, 200);
+       tint(225,255);
+
+       image(h_logo, 45, 45);
+       image(v_logo, 550, 400);
+       
+
+     break;
+  }
 }

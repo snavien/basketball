@@ -8,7 +8,10 @@ class Game
            vt_abbr;
   int e_cnt;
   ArrayList<Event> events;
-  void set_game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta)
+  Game(){
+    
+  }
+  Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta)
   {
     gameid = gid;
     hometeamid = htid;
