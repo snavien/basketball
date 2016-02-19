@@ -103,11 +103,15 @@ void populate_events(Game game, ArrayList<Game> games)
          }
       }
     });
+  String eventid;
   for(File file: filesList)
   {
      if(file.isFile())
      {
-        initialize_event(game, file.getName());
+        eventid = file.getName();
+        String str = eventid.substring(0, eventid.lastIndexOf('.'));
+        Event e = new Event(str);
+        game.events.put(eventid, e);
      }
   }
 
@@ -225,9 +229,8 @@ void initialize_event(Game game, String eventid)
   double max_height = Collections.max(ball_heights);
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
-  String str = eventid.substring(0, eventid.lastIndexOf('.'));
-  Event e = new Event(ball, home, visitor, str);
-  game.add_event(e);
+
+  game.events.getKey(eventid).set_event(ball, home, visitor);
   //println("max ball height: " + max_height);
  
 }
@@ -302,7 +305,7 @@ void draw()
          if(event_index >= 0 && event_index <= curr_game.events.size())
          {
             curr_game.set_curr(event_index);
-         }
+ }
          break;
        case 1:
          

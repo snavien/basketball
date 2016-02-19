@@ -8,7 +8,7 @@ class Game
            vt_abbr,
            gamedate;
   int e_cnt;
-  ArrayList<Event> events;
+  LinkedHashMap events;
   Event currevent;
   Game(){
     
@@ -23,7 +23,7 @@ class Game
     ht_abbr = hta;
     vt_name = vtn;
     vt_abbr  = vta; 
-    events = new ArrayList<Event>();
+    events = new LinkedHashMap();
     gamedate = gd;
   }
   
