@@ -39,20 +39,22 @@ class Court{
       int w = 752, h = 394;
       strokeWeight(2);
       fill(255);
-      rect(10,10, 752, 404);
+      int offx = 20;
+      int offy = 20;
+      rect(20,20, 752, 450);
       fill(40,40,40);
       stroke(0);
-      rect (20, 10, w - 20, h);                 // court
+      rect (offx, offy, w - 20, h);                 // court
       
       //arc (435, 263, 190, 190, HALF_PI, PI+HALF_PI);      // right 3 point
       //arc (65, 263, 190, 190, radians(270), radians(450));   // left 3 point
       
       fill (12, 129, 200);                  // center circle
-      ellipse (w/2 + 20, 197, 48, 48); 
+      ellipse (w/2 + offx, 197, 48, 48); 
       fill (255);
-      ellipse (w/2 + 20, 197, 16, 16);  
+      ellipse (w/2 + offx, 197, 16, 16);  
       
-      line (376 + 20, 10, 376 + 20, 394 + 10);
+      line (376 + offx, 10, 376 + 20, 394 + 10);
       fill (12, 129, 200);                  // half-court
       
       rect (20, 149, 152, 96);                  // left rectangle/key

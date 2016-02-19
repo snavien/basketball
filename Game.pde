@@ -5,13 +5,14 @@ class Game
   String  ht_name,
            ht_abbr,
            vt_name,
-           vt_abbr;
+           vt_abbr,
+           gamedate;
   int e_cnt;
   ArrayList<Event> events;
   Game(){
     
   }
-  Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta)
+  Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta, String gd)
   {
     gameid = gid;
     hometeamid = htid;
@@ -22,11 +23,11 @@ class Game
     vt_name = vtn;
     vt_abbr  = vta; 
     events = new ArrayList<Event>();
+    gamedate = gd;
   }
   
   void add_event(Event e)
   {
-
     events.add(e);
   }
   void draw_game()

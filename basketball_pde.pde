@@ -1,8 +1,9 @@
 //TODO: Map moment to players and ball
-int STATE0 = 0;
-Game curr_game;
-int game_index;
 
+Game curr_game;
+int game_index,
+    event_index;
+int state;
 import java.util.*;
 Table   gamestable, 
         eventstable, 
@@ -25,6 +26,8 @@ void setup()
   court = new Court();
   clock = new Clock();
   game_index = 0;
+  event_index = 0;
+  state = 0;
   games = new ArrayList<Game>();
   load_games();
   
@@ -38,14 +41,14 @@ void load_games()
 {
   //PROCESS DATA
   gamestable = loadTable("games.csv", "header"); // list of games
-
+  String game_date = new String();
   int gameid = 0, hometeamid = 0, visitorteamid = 0;
   for (TableRow row : gamestable.rows()) 
   {        
     gameid = row.getInt("gameid");                    // load gameid
     hometeamid = row.getInt("hometeamid");           // load home team id
     visitorteamid = row.getInt("visitorteamid");     // load visitor team id
-    
+    game_date = row.getString("gamedate");
     
     teamstable = loadTable("team.csv", "header");           // list of teams
 
@@ -71,7 +74,7 @@ void load_games()
     println("gameid: " + gameid);
     println(ht_name);
     println(vt_name);
-    Game game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,vt_abbr);
+    Game game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,vt_abbr, game_date);
     games.add(game);
 
 
@@ -223,7 +226,7 @@ void initialize_event(Game game, String eventid)
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
-  Event e = new Event(ball, home, visitor);
+  Event e = new Event(ball, home, visitor, eventid);
   game.add_event(e);
   //println("max ball height: " + max_height);
  
@@ -233,7 +236,6 @@ void keyPressed()
 {
  if(keyCode == RIGHT)
  {
-   println("ALDSKFJSAJKFFLS");
    game_index++; 
  }
  if(keyCode == LEFT) 
@@ -242,21 +244,41 @@ void keyPressed()
  }
  if(game_index >= 0 && game_index <= 81)
  {
-   print("POOP");
    curr_game = games.get(game_index);
    print(curr_game.ht_abbr);
 
  }
  if(keyCode == ENTER)
  {
+    state = 1;
     populate_events(curr_game, games);
+    PFont font = loadFont("Gadugi-Bold-48.vlw");
+    textFont(font, 20);
+    String str = curr_game.events.get(event_index).eventid;
+    text("Event #" + (str).substring(0, str.lastIndexOf('.'))
+                      , width/2 - 50, height/2 + 70);
+    print("!");
+ }
+ if(keyCode == UP)
+ {
+    event_index--;
+ }
+ if(keyCode == DOWN)
+ {
+    event_index++; 
+ }
+ if(game_index >= 0 && game_index <= curr_game.events.size())
+ {
+   curr_game = games.get(game_index);
+   print(curr_game.ht_abbr);
+
  }
  
 }
 
 void draw() 
 {
-  int state = 0;
+
   if(game_index >= 0 && game_index <= 81)
   {
     switch(state)
@@ -269,18 +291,25 @@ void draw()
          h_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.ht_abbr +".png");
          v_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.vt_abbr +".png");
          basketball = loadImage(sketchPath() +"/images/basketball.png");
-         image(img, 0, 0,width, height);
+         image(img, 0, 0, width, height);
          noStroke();
          
          tint(225,127);
          image(basketball, 45,35, 200, 200);
          image(basketball, 550, 400, 200, 200);
          tint(225,255);
-         image(h_logo, 45, 45);
-         image(v_logo, 550, 400);
-         
-  
-       break;
+         image(h_logo, 45, 45, 200, 200);
+         image(v_logo, 550, 400, 200, 200);
+         PFont font;
+         font = loadFont("Gadugi-Bold-48.vlw");
+         textFont(font, 50);
+         text(curr_game.gamedate, width/2- 150, height/2 + 20);
+
+         break;
+       case 1:
+
+
+         break;
     }
   }
 }
