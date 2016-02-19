@@ -1,23 +1,26 @@
 class Ball{
   
-    double  x,
-            y,
-            h;
-            
-    ArrayList<Double> ball_px,
-                      ball_py,
-                      ball_height;
-    int moment;
-    Boolean to_update;
-    float offx, offy;
-    double max_height;
-    ArrayList<Integer> moment_list;
+      double  x,
+              y,
+              h;
+              
+      ArrayList<Double> ball_px,
+                        ball_py,
+                        ball_height;
+      int moment;
+      Boolean to_update;
+      float offx, offy;
+      double max_height;
+      ArrayList<Integer> moment_list;
      Ball(ArrayList<Double> bpx, ArrayList<Double> bpy, ArrayList<Double> hgt,
         int m, double mx){//, ArrayList<Integer> ml){
      
        moment = 0;
+       ball_px = new ArrayList<Double>();
        ball_px = bpx;
+       ball_py = new ArrayList<Double>();
        ball_py = bpy;
+       ball_height = new ArrayList<Double>();
        ball_height = hgt;
        x = bpx.get(m);
        y = bpy.get(m);

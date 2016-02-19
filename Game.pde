@@ -6,6 +6,8 @@ class Game
            ht_abbr,
            vt_name,
            vt_abbr;
+  int e_cnt;
+  ArrayList<Event> events;
   void set_game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta)
   {
     gameid = gid;
@@ -15,9 +17,20 @@ class Game
     ht_name = htn;
     ht_abbr = hta;
     vt_name = vtn;
-    vt_abbr  = vta;
-    
-    
+    vt_abbr  = vta; 
+    events = new ArrayList<Event>();
   }
+  
+  void add_event(Event e)
+  {
+
+    events.add(e);
+  }
+  void draw_game()
+  {
+    clear();
+    court.display();
+  }
+  
 
 }  

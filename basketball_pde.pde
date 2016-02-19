@@ -3,67 +3,35 @@
 
 import java.util.*;
 Table   gamestable, 
-  eventstable, 
-  playerstable, 
-  teamstable;
-Court  court;
-Ball   ball;
-Clock  clock;
-Player []  home, 
-  visitor;
-ArrayList<Integer> moments;
+        eventstable, 
+        playerstable, 
+        teamstable;
 HScrollbar hs1;  // Two scrollbars      
-ArrayList<Double> ball_heights, 
-  bpx, 
-  bpy, 
-  posx, 
-  posy;
+        
+Clock  clock;
+Court  court;
 
+ArrayList<Game> games;
 
 void setup()
 {
   size(800, 800);      // always go first
 
   surface.setResizable(true);
-  home = new Player[8];
-  visitor = new Player[8];
+
 
   smooth();
 
   court = new Court();
-
+  
   clock = new Clock();
-  home = new Player[5];
-  visitor = new Player[5];
 
   Game game = new Game();
+ 
+  games = new ArrayList<Game>();
+ 
   load_games(game);
-  
-  println(dataPath(""));
-  File dir = new File(dataPath("") + "/games/00" + game.gameid+"/");
-  println(dir);
-  File[] filesList = dir.listFiles();
-  Arrays.sort(filesList, 
-    new Comparator<File>(){
-      public int compare(File a, File b){
-         int len = a.getName().length() - b.getName().length();
-         if(len == 0)
-         {
-           return a.getName().compareTo(b.getName());
-         }
-         else 
-         {
-            return len; 
-         }
-      }
-    });
-  for(File file: filesList)
-  {
-     if(file.isFile())
-     {
-        load_event(game, file.getName());
-     }
-  }
+  populate_events(game, games);
   
   playerstable = loadTable("players.csv", "header");       // list of teams
 
@@ -85,40 +53,80 @@ void load_games(Game game)
     visitorteamid = row.getInt("visitorteamid");     // load visitor team id
 
     println("This game has an ID of " + gameid);
-    break;
-  }
-  teamstable = loadTable("team.csv", "header");           // list of teams
+    
+    teamstable = loadTable("team.csv", "header");           // list of teams
 
-  String  ht_name = new String(), 
-    ht_abbr = new String(), 
-    vt_name = new String(), 
-    vt_abbr = new String();
-  for (TableRow row : teamstable.rows()) 
-  {        
-    if (row.getInt("teamid") == hometeamid)
-    {
-      ht_name = row.getString("name");
-      ht_abbr = row.getString("abbreviation");
+    String  ht_name = new String(), 
+      ht_abbr = new String(), 
+      vt_name = new String(), 
+      vt_abbr = new String();
+    for (TableRow trow : teamstable.rows()) 
+    {        
+      if (trow.getInt("teamid") == hometeamid)
+      {
+        ht_name = trow.getString("name");
+        ht_abbr = trow.getString("abbreviation");
+      }
+      if (trow.getInt("teamid") == visitorteamid)
+      {
+        vt_name = trow.getString("name");
+        vt_abbr = trow.getString("abbreviation");
+      }
     }
-    if (row.getInt("teamid") == visitorteamid)
-    {
-      vt_name = row.getString("name");
-      vt_abbr = row.getString("abbreviation");
-    }
+  
+    println("The home team: " + ht_name + ", "+  ht_abbr);
+    println("The visitor team: " + vt_name + ", "+  vt_abbr);
+  
+    game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
+    games.add(game);
+
   }
 
-  println("The home team: " + ht_name + ", "+  ht_abbr);
-  println("The visitor team: " + vt_name + ", "+  vt_abbr);
-
-  game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
+}
+void populate_events(Game game, ArrayList<Game> games)
+{  
+  println(dataPath(""));
+  File dir = new File(dataPath("") + "/games/00" + game.gameid+"/");
+  println(dir);
+  
+  File[] filesList = dir.listFiles();
+  Arrays.sort(filesList, 
+    new Comparator<File>()
+    {
+      public int compare(File a, File b){
+         int len = a.getName().length() - b.getName().length();
+         if(len == 0)
+         {
+           return a.getName().compareTo(b.getName());
+         }
+         else 
+         {
+            return len; 
+         }
+      }
+    });
+  for(File file: filesList)
+  {
+     if(file.isFile())
+     {
+        initialize_event(game, file.getName());
+     }
+  }
+  games.add(game);
+  
 }
 
-void load_event(Game game, String eventid)
+void initialize_event(Game game, String eventid)
 {
+  Player [] home = new Player[5],
+            visitor = new Player[5];
+  Ball ball;
+  ArrayList<Double> bpx,
+                    bpy,
+                    ball_heights;           
   println(eventid);
   eventstable = loadTable("/games/00" + game.gameid + "/" + eventid);   //load an event
 
-  int h_cnt = 0, v_cnt = 0, pid; 
 
   ball_heights = new ArrayList<Double>();
   bpx = new ArrayList<Double>();
@@ -155,89 +163,44 @@ void load_event(Game game, String eventid)
     ArrayList playerx = new ArrayList<Float>(), playery = new ArrayList<Float>();
     for (TableRow row : eventstable.rows()) 
     {        
-      if (row.getInt(2) == curr && row.getInt(2) != -1) {
-        //println(row.getFloat(3));
+      if (row.getInt(2) == curr && row.getInt(2) != -1) 
+      {
         playerx.add(row.getFloat(3));
         playery.add(row.getFloat(4));
         tid = row.getInt(1);
       }
     }
     if (tid == game.hometeamid && hct <= 4) {
-      println(hct);
-      println(game.hometeamid);
+
       home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
-      println(playerx);
-      println((home[hct]).px);
       hct++;
-      
-    } else 
+
+    } 
+    else 
     {
       if(vct <= 4)
       {
-        
         visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
         vct++;
       }
     }
-
+    
     curr = it.next();
   }
   while (it.hasNext());
-  //ArrayList playerx = new ArrayList<Float>(), playery = new ArrayList<Float>();
 
-  //for (TableRow row : eventstable.rows()) 
-  //{        
-  //  if (row.getInt(2) == curr && row.getInt(3) != -1) {
-  //    playerx.add(row.getFloat(3));
-  //    playery.add(row.getFloat(4));
-  //    tid = row.getInt(1);
-  //  }
-  //}
-
-
-  //if (tid == game.hometeamid) {
-  //  home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
-  //  hct++;
-  //} else {
-  //  visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
-  //  vct++;
-  //}
   double max_height = Collections.max(ball_heights);
 
   println(Arrays.toString(pids.toArray()));
 
-  ball = new Ball(bpx, bpy, ball_heights, 0, max_height);///, moments);
+  ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
+  Event e = new Event(ball, home, visitor);
+  game.add_event(e);
   println("max ball height: " + max_height);
  
 }
 
-int [] m_p= {0, 0};
 void draw() 
 {
-}
-
-void draw_game_event()
-{
-  clear();
-  court.display();
-
-  //clock.display();
-
-  hs1.update(m_p);
-  hs1.display();
-
-  for (int i = 0; i < 5; i++)
-  {
-    home[i].update(m_p);
-    home[i].display();
-    visitor[i].update(m_p);
-    visitor[i].display();
-  }
-
-  ball.update(m_p);
-  ball.display();
-
-  stroke(0);
-  line(0, height - 30, width, height - 30);
 }
