@@ -74,8 +74,8 @@ void load_games(Game game)
       }
     }
   
-    println("The home team: " + ht_name + ", "+  ht_abbr);
-    println("The visitor team: " + vt_name + ", "+  vt_abbr);
+  //  println("The home team: " + ht_name + ", "+  ht_abbr);
+  //  println("The visitor team: " + vt_name + ", "+  vt_abbr);
   
     game.set_game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,ht_abbr);
     games.add(game);
@@ -124,15 +124,48 @@ void initialize_event(Game game, String eventid)
   ArrayList<Double> bpx,
                     bpy,
                     ball_heights;           
-  println(eventid);
+  println("eventid: " + eventid);
   eventstable = loadTable("/games/00" + game.gameid + "/" + eventid);   //load an event
 
 
   ball_heights = new ArrayList<Double>();
   bpx = new ArrayList<Double>();
   bpy = new ArrayList<Double>();
+
+  int tid = 0, hct = 0, vct = 0;
+
   int moment_cnt = 0;
   Set pids = new HashSet<Integer>();
+  
+  ArrayList playerx = new ArrayList<Float>(), 
+            playery = new ArrayList<Float>();
+
+  //first set
+  for(int i = 0; i < 11; i++)
+  { 
+     TableRow row = eventstable.getRow(i); 
+     if(row.getInt(1) == -1 && row.getInt(2) == -1)
+     {
+         ball_heights.add(moment_cnt, (double)row.getInt(5));
+         bpx.add(moment_cnt, (double)row.getInt(3));
+         bpy.add(moment_cnt, (double)row.getInt(4));
+     }
+     else
+     {
+       if (tid == game.hometeamid && hct <= 4) 
+       {
+         home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
+         hct++;
+       }
+       if(tid == game.visitorteamid && vct <= 4)
+       {
+         visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
+         vct++;
+       }
+     }
+  }
+  
+  
   for (TableRow row : eventstable.rows()) 
   {     
     if (row.getInt(6) != moment_cnt)                             // iterate through moments
@@ -142,7 +175,9 @@ void initialize_event(Game game, String eventid)
         ball_heights.add(moment_cnt, (double)row.getInt(5));
         bpx.add(moment_cnt, (double)row.getInt(3));
         bpy.add(moment_cnt, (double)row.getInt(4));
-      } else {
+      } 
+      else 
+      {
         ball_heights.add(moment_cnt, (double)-1.0);
         bpx.add(moment_cnt, (double)-1.0);
         bpy.add(moment_cnt, (double)-1.0);
@@ -157,10 +192,8 @@ void initialize_event(Game game, String eventid)
   Iterator<Integer> it = pids.iterator();
 
   int curr = it.next();
-  int tid = 0, hct = 0, vct = 0;
   do
   {
-    ArrayList playerx = new ArrayList<Float>(), playery = new ArrayList<Float>();
     for (TableRow row : eventstable.rows()) 
     {        
       if (row.getInt(2) == curr && row.getInt(2) != -1) 
@@ -187,17 +220,18 @@ void initialize_event(Game game, String eventid)
     
     curr = it.next();
   }
-  while (it.hasNext());
+  while(it.hasNext());
+  
 
+  println("ball heights: " + ball_heights.size());
   double max_height = Collections.max(ball_heights);
 
-  println(Arrays.toString(pids.toArray()));
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
   Event e = new Event(ball, home, visitor);
   game.add_event(e);
-  println("max ball height: " + max_height);
+  //println("max ball height: " + max_height);
  
 }
 
