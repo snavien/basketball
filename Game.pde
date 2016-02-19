@@ -9,6 +9,7 @@ class Game
            gamedate;
   int e_cnt;
   ArrayList<Event> events;
+  Event currevent;
   Game(){
     
   }
@@ -24,6 +25,11 @@ class Game
     vt_abbr  = vta; 
     events = new ArrayList<Event>();
     gamedate = gd;
+  }
+  
+  void set_curr(int index)
+  {
+    currevent = events.get(index); 
   }
   
   void add_event(Event e)

@@ -225,8 +225,8 @@ void initialize_event(Game game, String eventid)
   double max_height = Collections.max(ball_heights);
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
-
-  Event e = new Event(ball, home, visitor, eventid);
+  String str = eventid.substring(0, eventid.lastIndexOf('.'));
+  Event e = new Event(ball, home, visitor, str);
   game.add_event(e);
   //println("max ball height: " + max_height);
  
@@ -251,12 +251,7 @@ void keyPressed()
  if(keyCode == ENTER)
  {
     state = 1;
-    populate_events(curr_game, games);
-    PFont font = loadFont("Gadugi-Bold-48.vlw");
-    textFont(font, 20);
-    String str = curr_game.events.get(event_index).eventid;
-    text("Event #" + (str).substring(0, str.lastIndexOf('.'))
-                      , width/2 - 50, height/2 + 70);
+   
     print("!");
  }
  if(keyCode == UP)
@@ -266,13 +261,8 @@ void keyPressed()
  if(keyCode == DOWN)
  {
     event_index++; 
- }
- if(game_index >= 0 && game_index <= curr_game.events.size())
- {
-   curr_game = games.get(game_index);
-   print(curr_game.ht_abbr);
+ } 
 
- }
  
 }
 
@@ -281,9 +271,13 @@ void draw()
 
   if(game_index >= 0 && game_index <= 81)
   {
+    PFont font;
+    font = loadFont("Gadugi-Bold-48.vlw");
     switch(state)
     {
        case 0:
+         fill(200,200,200);
+         rect(0,0,width,height);
          curr_game = new Game();
          curr_game = games.get(game_index);
          PImage img, h_logo, v_logo, basketball;
@@ -300,14 +294,21 @@ void draw()
          tint(225,255);
          image(h_logo, 45, 45, 200, 200);
          image(v_logo, 550, 400, 200, 200);
-         PFont font;
-         font = loadFont("Gadugi-Bold-48.vlw");
+         fill(255);
          textFont(font, 50);
          text(curr_game.gamedate, width/2- 150, height/2 + 20);
-
+          populate_events(curr_game, games);
+         event_index = 0;
+         if(event_index >= 0 && event_index <= curr_game.events.size())
+         {
+            curr_game.set_curr(event_index);
+         }
          break;
        case 1:
-
+         
+         textFont(font, 20);
+         String str = curr_game.currevent.eventid;
+         text("Event #" + str, width/2 - 50, height/2 + 70);
 
          break;
     }
