@@ -1,7 +1,7 @@
 //TODO: Map moment to players and ball
 int STATE0 = 0;
 Game curr_game;
-int game_index = 0;
+int game_index;
 
 import java.util.*;
 Table   gamestable, 
@@ -24,8 +24,7 @@ void setup()
 
   court = new Court();
   clock = new Clock();
-  Game game;
-
+  game_index = 0;
   games = new ArrayList<Game>();
   load_games();
   
@@ -73,10 +72,8 @@ void load_games()
     println(ht_name);
     println(vt_name);
     Game game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,vt_abbr);
-    
-    curr_game = new Game();
-    populate_events(game, games);
-    curr_game = games.get(0);    
+    games.add(game);
+
 
   }
 
@@ -110,7 +107,7 @@ void populate_events(Game game, ArrayList<Game> games)
         initialize_event(game, file.getName());
      }
   }
-  games.add(game);
+
   
 }
 
@@ -234,12 +231,10 @@ void initialize_event(Game game, String eventid)
 
 void keyPressed()
 {
- curr_game = new Game();
-
  if(keyCode == RIGHT)
  {
    println("ALDSKFJSAJKFFLS");
-    game_index++; 
+   game_index++; 
  }
  if(keyCode == LEFT) 
  {
@@ -250,10 +245,11 @@ void keyPressed()
    print("POOP");
    curr_game = games.get(game_index);
    print(curr_game.ht_abbr);
+
  }
  if(keyCode == ENTER)
  {
-    
+    populate_events(curr_game, games);
  }
  
 }
@@ -261,27 +257,30 @@ void keyPressed()
 void draw() 
 {
   int state = 0;
-  switch(state)
+  if(game_index >= 0 && game_index <= 81)
   {
-     case 0:
-       curr_game = games.get(0);
-       PImage img, h_logo, v_logo, basketball;
-       img = loadImage(sketchPath() + "/images/splash.png");
-       h_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.ht_abbr +".png");
-       v_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.vt_abbr +".png");
-       basketball = loadImage(sketchPath() +"/images/basketball.png");
-       image(img, 0, 0,width, height);
-       noStroke();
-       
-       tint(225,127);
-       image(basketball, 45,35, 200, 200);
-       image(basketball, 550, 400, 200, 200);
-       tint(225,255);
-
-       image(h_logo, 45, 45);
-       image(v_logo, 550, 400);
-       
-
-     break;
+    switch(state)
+    {
+       case 0:
+         curr_game = new Game();
+         curr_game = games.get(game_index);
+         PImage img, h_logo, v_logo, basketball;
+         img = loadImage(sketchPath() + "/images/splash.png");
+         h_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.ht_abbr +".png");
+         v_logo = loadImage(sketchPath() +"/images/teams/"+curr_game.vt_abbr +".png");
+         basketball = loadImage(sketchPath() +"/images/basketball.png");
+         image(img, 0, 0,width, height);
+         noStroke();
+         
+         tint(225,127);
+         image(basketball, 45,35, 200, 200);
+         image(basketball, 550, 400, 200, 200);
+         tint(225,255);
+         image(h_logo, 45, 45);
+         image(v_logo, 550, 400);
+         
+  
+       break;
+    }
   }
 }
