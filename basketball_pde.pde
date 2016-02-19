@@ -1,6 +1,7 @@
 //TODO: Map moment to players and ball
 
 Game curr_game;
+Event curr_event;
 int game_index,
     event_index;
 int state;
@@ -71,27 +72,28 @@ void load_games()
       }
     }
     
-    println("gameid: " + gameid);
-    println(ht_name);
-    println(vt_name);
+    //println("gameid: " + gameid);
+    //println(ht_name);
+    //println(vt_name);
     Game game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,vt_abbr, game_date);
     games.add(game);
-
-
   }
 
 }
+
 void populate_events(Game game, ArrayList<Game> games)
 {  
-  println(dataPath(""));
+  //println(dataPath(""));
+  print("!");
   File dir = new File(dataPath("") + "/games/00" + game.gameid+"/");
-  println(dir);
+  //println(dir);
   
   File[] filesList = dir.listFiles();
   Arrays.sort(filesList, 
     new Comparator<File>()
     {
-      public int compare(File a, File b){
+      public int compare(File a, File b)
+      {
          int len = a.getName().length() - b.getName().length();
          if(len == 0)
          {
@@ -110,8 +112,8 @@ void populate_events(Game game, ArrayList<Game> games)
      {
         eventid = file.getName();
         String str = eventid.substring(0, eventid.lastIndexOf('.'));
-        Event e = new Event(str);
-        game.events.put(eventid, e);
+        game.add_event(str);
+        println(game.events.get(0).eventid);
      }
   }
 
@@ -230,7 +232,7 @@ void initialize_event(Game game, String eventid)
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
-  game.events.getKey(eventid).set_event(ball, home, visitor);
+  game.events.get(eventid).set_event(ball, home, visitor);
   //println("max ball height: " + max_height);
  
 }
@@ -300,17 +302,16 @@ void draw()
          fill(255);
          textFont(font, 50);
          text(curr_game.gamedate, width/2- 150, height/2 + 20);
-          populate_events(curr_game, games);
-         event_index = 0;
-         if(event_index >= 0 && event_index <= curr_game.events.size())
-         {
-            curr_game.set_curr(event_index);
- }
+         
+         populate_events(curr_game, games);
+         
+         curr_event = curr_game.events.get(event_index);
          break;
+         
        case 1:
          
          textFont(font, 20);
-         String str = curr_game.currevent.eventid;
+         String str = curr_event.eventid;
          text("Event #" + str, width/2 - 50, height/2 + 70);
 
          break;

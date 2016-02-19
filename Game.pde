@@ -8,12 +8,9 @@ class Game
            vt_abbr,
            gamedate;
   int e_cnt;
-  LinkedHashMap events;
-  Event currevent;
-  Game(){
-    
-  }
-  Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta, String gd)
+  LinkedHashMap<String, Event> events;
+
+ Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta, String gd)
   {
     gameid = gid;
     hometeamid = htid;
@@ -23,18 +20,11 @@ class Game
     ht_abbr = hta;
     vt_name = vtn;
     vt_abbr  = vta; 
-    events = new LinkedHashMap();
     gamedate = gd;
   }
-  
-  void set_curr(int index)
+  void add_event(String k)
   {
-    currevent = events.get(index); 
-  }
-  
-  void add_event(Event e)
-  {
-    events.add(e);
+    events.put(k, new Event(k));
   }
   void draw_game()
   {
