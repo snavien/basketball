@@ -201,7 +201,10 @@ void initialize_event(Game game, String eventid, Event event)
                                (all_players.get(h.playerid)).lname, 
                                (all_players.get(h.playerid)).jersey_num,
                                (all_players.get(h.playerid)).position);
-                               
+                         
+            h.r = 0;
+            h.g = 0;
+            h.b = 255;                  
                                
             event.home.put(row.getInt(PLAYERID), h);
           } 
@@ -235,7 +238,9 @@ void initialize_event(Game game, String eventid, Event event)
                                  (all_players.get(v.playerid)).jersey_num,
                                  (all_players.get(v.playerid)).position);
                                  
-                                 
+            v.r = 255;
+            v.g = 0;
+            v.b = 0;               
               event.visitor.put(row.getInt(PLAYERID), v);
             } 
 
@@ -248,8 +253,6 @@ void initialize_event(Game game, String eventid, Event event)
     }
   }
 
-  println("went through");
-  
   double max_height = Collections.max(ball_heights);
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
@@ -363,8 +366,6 @@ void draw()
 
 void draw_event(int[] m_p)
 {
-    println("1"); 
     initialize_event(curr_game, curr_id, curr_event);
-    println("2");
     curr_event.draw_game_event(m_p);         
 }

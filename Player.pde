@@ -6,7 +6,7 @@ class Player{
    String fname, lname, name;
    int r, g, b;
    
-   boolean over;
+   boolean over, select;
    int jersey_num; String position;
    
    Player(){
@@ -32,7 +32,7 @@ class Player{
    }
    // Custom method for updating the variables
     void update(int m_p[]) {
-      println("mx: " + mouseX);
+
      if(m_p[1] == 0)
      {
       if(posxs.size() > 1)
@@ -42,7 +42,7 @@ class Player{
 
           
           px = posxs.get(moment);
-          println("x " + px);
+
           py = posys.get(moment);
           moment++;  
         }
@@ -63,17 +63,32 @@ class Player{
       if(mousePressed && over)
       {
         println("you junkface");
+
+        select = true;
+
+      }
+      if(select)
+      {
+        int or = r, og = g, ob = b;
         r = 100;
         g = 100;
         b = 100;
         PFont font;
+
         font = loadFont("Gadugi-Bold-48.vlw");
+        fill(0);
+        rect(width/2 - 60, height/2 + 150, 200, 100);
+        fill(255);
+        
         textFont(font, 20);
       
-        text(name, width/2 - 50, height/2 + 70);
- 
+        text(name, width/2 - 50, height/2 + 200);
+        text(position, width/2 - 50, height/2 + 220);
+        
+        //r = or;
+        //g = og;
+        //b = ob;
       }
-
 
     }
     
@@ -104,9 +119,16 @@ class Player{
      stroke(255);
      strokeWeight(1);
      fill(r,g,b);
-     
-
      ellipse(offx + (px * (752/94.0)), offy + (py * (394/50.0)), 12, 12);  
+
+      PFont font;
+      
+      font = loadFont("Gadugi-Bold-48.vlw");
+      fill(0);
+      textFont(font, 10);
+
+      text(jersey_num, (px * (752/94.0)), offy + (py * (394/50.0)));
+
                    
      endShape();
    }
