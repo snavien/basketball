@@ -8,10 +8,13 @@ class Game
            vt_abbr,
            gamedate;
   int e_cnt;
-  LinkedHashMap<String, Event> events;
-
+  //LinkedHashMap<String, Event> events;
+  ArrayList<String> eventlist;
+ Game(){
+ 
+ }
  Game(int gid, int htid, int vtid, String htn, String hta, String vtn,String vta, String gd)
-  {
+ {
     gameid = gid;
     hometeamid = htid;
     visitorteamid = vtid;
@@ -19,12 +22,15 @@ class Game
     ht_name = htn;
     ht_abbr = hta;
     vt_name = vtn;
-    vt_abbr  = vta; 
+    vt_abbr = vta;
+    //events = new LinkedHashMap<String, Event>();
+    eventlist = new ArrayList<String>();
     gamedate = gd;
   }
   void add_event(String k)
   {
-    events.put(k, new Event(k));
+    eventlist.add(k);
+    //events.put(k, new Event(k));
   }
   void draw_game()
   {

@@ -87,7 +87,7 @@ void populate_events(Game game, ArrayList<Game> games)
   print("!");
   File dir = new File(dataPath("") + "/games/00" + game.gameid+"/");
   //println(dir);
-  
+  String eventid;
   File[] filesList = dir.listFiles();
   Arrays.sort(filesList, 
     new Comparator<File>()
@@ -105,15 +105,16 @@ void populate_events(Game game, ArrayList<Game> games)
          }
       }
     });
-  String eventid;
+ 
+  
+  
   for(File file: filesList)
   {
      if(file.isFile())
      {
         eventid = file.getName();
         String str = eventid.substring(0, eventid.lastIndexOf('.'));
-        game.add_event(str);
-        println(game.events.get(0).eventid);
+        game.add_event(str);   
      }
   }
 
@@ -129,7 +130,7 @@ void initialize_event(Game game, String eventid)
                     bpy,
                     ball_heights;           
   //println("eventid: " + eventid);
-  eventstable = loadTable("/games/00" + game.gameid + "/" + eventid);   //load an event
+  eventstable = loadTable("/games/00" + game.gameid + "/" + eventid + ".csv");   //load an event
 
 
   ball_heights = new ArrayList<Double>();
@@ -232,8 +233,6 @@ void initialize_event(Game game, String eventid)
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
-  game.events.get(eventid).set_event(ball, home, visitor);
-  //println("max ball height: " + max_height);
  
 }
 
@@ -253,7 +252,7 @@ void keyPressed()
    print(curr_game.ht_abbr);
 
  }
- if(keyCode == ENTER)
+ if(keyCode == ENTER && state == 0)
  {
     state = 1;
    
@@ -267,13 +266,21 @@ void keyPressed()
  {
     event_index++; 
  } 
+ 
+ if(keyCode == ' ')
+ {
+     state = 2;
+  }
+ }
 
  
 }
 
+String curr_id;
 void draw() 
 {
 
+  println(state);
   if(game_index >= 0 && game_index <= 81)
   {
     PFont font;
@@ -304,17 +311,28 @@ void draw()
          text(curr_game.gamedate, width/2- 150, height/2 + 20);
          
          populate_events(curr_game, games);
+
          
-         curr_event = curr_game.events.get(event_index);
+         
+         curr_id = curr_game.eventlist.get(event_index);
          break;
          
        case 1:
-         
-         textFont(font, 20);
-         String str = curr_event.eventid;
-         text("Event #" + str, width/2 - 50, height/2 + 70);
+         state = 1;
+         if(event_index >=0 && event_index < 82)
+         {
+           println("event index: " + event_index);
+           curr_id = curr_game.eventlist.get(event_index);
+  
+           textFont(font, 20);
+      
+           text("Event #" + curr_id, width/2 - 50, height/2 + 70);
+         }
 
          break;
+       case 2:
+         curr_game.draw_game();
+         
     }
   }
 }
