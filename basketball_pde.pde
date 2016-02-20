@@ -121,8 +121,8 @@ void populate_events(Game game, ArrayList<Game> games)
 
 Event initialize_event(Game game, String eventid)
 {
-  Player [] home = new Player[5],
-            visitor = new Player[5];
+  ArrayList <Player> home = new ArrayList<Player>(),
+                     visitor = new ArrayList< Player>();
   Ball ball;
   ArrayList<Double> bpx,
                     bpy,
@@ -157,12 +157,12 @@ Event initialize_event(Game game, String eventid)
      {
        if (tid == game.hometeamid && hct <= 4) 
        {
-         home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
+         home.add(new Player(playerx, playery, 0, 255, 0, 0));
          hct++;
        }
        if(tid == game.visitorteamid && vct <= 4)
        {
-         visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
+         visitor.add(new Player(playerx, playery, 0, 0, 0, 255));
          vct++;
        }
      }
@@ -208,7 +208,7 @@ Event initialize_event(Game game, String eventid)
     }
     if (tid == game.hometeamid && hct <= 4) {
 
-      home[hct] = new Player(playerx, playery, 0, 255, 0, 0);
+      home.add(new Player(playerx, playery, 0, 255, 0, 0));
       hct++;
 
     } 
@@ -216,7 +216,7 @@ Event initialize_event(Game game, String eventid)
     {
       if(vct <= 4)
       {
-        visitor[vct] = new Player(playerx, playery, 0, 0, 0, 255);
+        visitor.add(new Player(playerx, playery, 0, 0, 0, 255));
         vct++;
       }
     }
@@ -329,6 +329,7 @@ void draw()
          hs1.update(m_p);
          hs1.display();
          curr_game.draw_game();
+         println("players" + curr_event.home.size());
          curr_event.draw_game_event(m_p);
          
     }
