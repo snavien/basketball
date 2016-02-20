@@ -9,8 +9,11 @@ class Player{
    int jersey_num; String position;
    
    Player(){
+     moment = 0;
+     posxs = new ArrayList<Float>();
+     posys = new ArrayList<Float>();
      
-        }
+   }
    
    Player(ArrayList<Float> pxs, ArrayList<Float> pys, int m, 
    int red, int green, int blue, int id){
@@ -54,6 +57,7 @@ class Player{
        jersey_num = jnum;
        position = pos;
     }
+    
    void display()
    {
 
