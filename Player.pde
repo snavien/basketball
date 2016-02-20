@@ -5,6 +5,7 @@ class Player{
    int moment, playerid, offx, offy;
    String fname, lname, name;
    int r, g, b;
+   int avg_left;
    
    boolean over, select;
    int jersey_num; String position;
@@ -29,6 +30,7 @@ class Player{
      g = green;
      b = blue;
      playerid = id;
+     avg_left = 0;
    }
    // Custom method for updating the variables
     void update(int m_p[]) {
@@ -39,10 +41,11 @@ class Player{
       {
         if(moment < 1011)
         {
-
-          
           px = posxs.get(moment);
-
+          if(offx + px * (752/94.0) < 752)
+          {
+            avg_left++;
+          }
           py = posys.get(moment);
           moment++;  
         }
@@ -84,6 +87,7 @@ class Player{
       
         text(name, width/2 - 50, height/2 + 200);
         text(position, width/2 - 50, height/2 + 220);
+        text("Times left of half-court: " + avg_left, width/2 - 50, height/2 + 240);
         
         //r = or;
         //g = og;
@@ -127,7 +131,7 @@ class Player{
       fill(0);
       textFont(font, 10);
 
-      text(jersey_num, (px * (752/94.0)), offy + (py * (394/50.0)));
+      text(jersey_num, offx + (px * (752/94.0)), offy + (py * (394/50.0)));
 
                    
      endShape();

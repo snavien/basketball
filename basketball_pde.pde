@@ -356,16 +356,14 @@ void draw()
          hs1.update(m_p);
          hs1.display();
          curr_game.draw_game();
+         
          //println("h players " + curr_event.home.size());
          //println("v players " + curr_event.visitor.size());
          
-          draw_event(m_p);
+          noLoop();
+          initialize_event(curr_game, curr_id, curr_event);
+          loop();
+          curr_event.draw_game_event(m_p);    
     }
   }
-}
-
-void draw_event(int[] m_p)
-{
-    initialize_event(curr_game, curr_id, curr_event);
-    curr_event.draw_game_event(m_p);         
 }

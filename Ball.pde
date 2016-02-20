@@ -58,7 +58,8 @@ class Ball{
     }
    void display(){
      beginShape();
-     noStroke();
+     stroke(1);
+     strokeWeight(1);
      fill(255, 151, 2);
      ellipse(offx + (float)(x * (752/94.0)), offy + (float)(y * (394/50.0)), (float)(40 * (h/max_height)), (float)(40 *(h/max_height)));  
      endShape();

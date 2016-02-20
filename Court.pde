@@ -42,7 +42,7 @@ class Court{
       int offx = 20;
       int offy = 20;
       rect(20,20, 752, 450);
-      fill(40,40,40);
+      fill(255,165,0);
       stroke(0);
       rect (offx, offy, w - 20, h);                 // court
       
