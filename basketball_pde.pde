@@ -105,8 +105,6 @@ void populate_events(Game game, ArrayList<Game> games)
          }
       }
     });
- 
-  
   
   for(File file: filesList)
   {
@@ -275,16 +273,11 @@ void keyPressed()
      curr_event = initialize_event(curr_game, curr_id);
 
  }
- 
-
- 
 }
 
 String curr_id;
 void draw() 
 {
-
-  println(state);
   if(game_index >= 0 && game_index <= 81)
   {
     PFont font;
@@ -315,8 +308,6 @@ void draw()
          text(curr_game.gamedate, width/2- 150, height/2 + 20);
          
          populate_events(curr_game, games);
-
-         
          
          curr_id = curr_game.eventlist.get(event_index);
          break;
@@ -325,7 +316,6 @@ void draw()
          state = 1;
          if(event_index >=0 && event_index < 82)
          {
-           println("event index: " + event_index);
            curr_id = curr_game.eventlist.get(event_index);
   
            textFont(font, 20);
@@ -335,8 +325,11 @@ void draw()
 
          break;
        case 2:
+         int [] m_p = {0,0};
+         hs1.update(m_p);
+         hs1.display();
          curr_game.draw_game();
-         curr_event.draw_game_event();
+         curr_event.draw_game_event(m_p);
          
     }
   }
