@@ -32,17 +32,17 @@ class Player{
    }
    // Custom method for updating the variables
     void update(int m_p[]) {
-
+      println("mx: " + mouseX);
      if(m_p[1] == 0)
      {
-       println("size: " + posxs.size());
       if(posxs.size() > 1)
       {
         if(moment < 1011)
         {
 
-
+          
           px = posxs.get(moment);
+          println("x " + px);
           py = posys.get(moment);
           moment++;  
         }
@@ -54,6 +54,27 @@ class Player{
           moment = m_p[0];   
        }
      }
+      
+      if (overEvent()) {
+        over = true;
+      } else {
+        over = false;
+      }
+      if(mousePressed && over)
+      {
+        println("you junkface");
+        r = 100;
+        g = 100;
+        b = 100;
+        PFont font;
+        font = loadFont("Gadugi-Bold-48.vlw");
+        textFont(font, 20);
+      
+        text(name, width/2 - 50, height/2 + 70);
+ 
+      }
+
+
     }
     
     void set_player_info(String f, String l, int jnum, String pos)
@@ -65,24 +86,11 @@ class Player{
        position = pos;
     }
     
-    void mousePressed()
-    {
-      if (overEvent()) {
-        over = true;
-      } else {
-        over = false;
-      }
-      if(over)
-      {
-        r = 100;
-        g = 100;
-        b = 100;
-      }
-    }
+
     
    boolean overEvent() {
-    if (mouseX > px && mouseX < px+ 9 &&
-       mouseY > py && mouseY < py+9) {
+    if (mouseX > offx + (px * (752/94.0)) && mouseX < offy + (px * (752/94.0))+ 12 &&
+       mouseY > (py * (394/50.0)) && mouseY < offy + (py * (394/50.0))+12) {
       return true;
     } else {
       return false;
@@ -98,7 +106,7 @@ class Player{
      fill(r,g,b);
      
 
-     ellipse(offx + (px * (752/94.0)), offy + (py * (394/50.0)), 9, 9);  
+     ellipse(offx + (px * (752/94.0)), offy + (py * (394/50.0)), 12, 12);  
                    
      endShape();
    }

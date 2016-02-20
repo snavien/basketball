@@ -150,8 +150,7 @@ void populate_events(Game game)
 
 void initialize_event(Game game, String eventid, Event event)
 {
-  HashMap <Integer, Player> home = new HashMap<Integer, Player>(),
-                     visitor = new HashMap<Integer, Player>();
+  
   Ball ball;
   ArrayList<Double> bpx,
                     bpy,
@@ -164,11 +163,9 @@ void initialize_event(Game game, String eventid, Event event)
   bpx = new ArrayList<Double>();
   bpy = new ArrayList<Double>();
 
-  int tid = 0, hct = 0, vct = 0;
 
   int moment_cnt = 0;
-  Set pids = new HashSet<Integer>();
-  
+ 
   
   for (TableRow row : eventstable.rows()) 
   {     
