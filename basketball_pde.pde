@@ -81,7 +81,7 @@ void load_games()
 
 }
 
-void populate_events(Game game, ArrayList<Game> games)
+void populate_events(Game game)
 {  
   //println(dataPath(""));
   print("!");
@@ -155,6 +155,7 @@ Event initialize_event(Game game, String eventid)
      }
      else
      {
+       print("Llakdsjfakldjsf");
        if (tid == game.hometeamid && hct <= 4) 
        {
          home.add(new Player(playerx, playery, 0, 255, 0, 0));
@@ -195,6 +196,7 @@ Event initialize_event(Game game, String eventid)
   Iterator<Integer> it = pids.iterator();
 
   int curr = it.next();
+  
   do
   {
     for (TableRow row : eventstable.rows()) 
@@ -206,30 +208,55 @@ Event initialize_event(Game game, String eventid)
         tid = row.getInt(1);
       }
     }
+    
     if (tid == game.hometeamid && hct <= 4) {
 
       home.add(new Player(playerx, playery, 0, 255, 0, 0));
       hct++;
-
     } 
-    else 
+    if(tid == game.visitorteamid) 
     {
-      if(vct <= 4)
-      {
-        visitor.add(new Player(playerx, playery, 0, 0, 0, 255));
-        vct++;
-      }
+    
+      visitor.add(new Player(playerx, playery, 0, 0, 0, 255));
+      vct++;
+      
     }
+    println("h: " + hct + " v " + vct); 
     
     curr = it.next();
-  }
-  while(it.hasNext());
+  }while(it.hasNext());
   
+  for (TableRow row : eventstable.rows()) 
+  {        
+    if (row.getInt(2) == curr && row.getInt(2) != -1) 
+    {
+      playerx.add(row.getFloat(3));
+      playery.add(row.getFloat(4));
+      tid = row.getInt(1);
+    }
+  }
+  
+  if (tid == game.hometeamid && hct <= 4) {
+
+    Player h = new Player(playerx, playery, 0, 255, 0, 0);
+    home.add(h);
+    hct++;
+  } 
+  if(tid == game.visitorteamid) 
+  {
+    Player v = new Player(playerx, playery, 0, 255, 0, 0);
+    visitor.add(v);
+    vct++;
+    
+  }
+  println("h: " + hct + " v " + vct); 
 
   //println("ball heights: " + ball_heights.size());
   double max_height = Collections.max(ball_heights);
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
+
+  println("home " + home.get(0).name);
 
   Event e = new Event(ball, home, visitor, eventid);
   return e;
@@ -307,7 +334,7 @@ void draw()
          textFont(font, 50);
          text(curr_game.gamedate, width/2- 150, height/2 + 20);
          
-         populate_events(curr_game, games);
+         populate_events(curr_game);
          
          curr_id = curr_game.eventlist.get(event_index);
          break;
@@ -329,7 +356,8 @@ void draw()
          hs1.update(m_p);
          hs1.display();
          curr_game.draw_game();
-         println("players" + curr_event.home.size());
+         println("h players " + curr_event.home.size());
+         println("v players " + curr_event.visitor.size());
          curr_event.draw_game_event(m_p);
          
     }
