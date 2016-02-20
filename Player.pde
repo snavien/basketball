@@ -6,6 +6,7 @@ class Player{
    String fname, lname, name;
    int r, g, b;
    
+   boolean over;
    int jersey_num; String position;
    
    Player(){
@@ -34,19 +35,25 @@ class Player{
 
      if(m_p[1] == 0)
      {
-      if(moment < 1011)
-      {// && moment_list.get(moment) != -1){
-        px = posxs.get(moment);
-        py = posys.get(moment);
-        moment++;  
-      }
+       println("size: " + posxs.size());
+      if(posxs.size() > 1)
+      {
+        if(moment < 1011)
+        {
+
+
+          px = posxs.get(moment);
+          py = posys.get(moment);
+          moment++;  
+        }
+       }
+       else
+       {
+          px = posxs.get(m_p[0]);
+          py = posys.get(m_p[0]);
+          moment = m_p[0];   
+       }
      }
-     else
-     {
-        px = posxs.get(m_p[0]);
-        py = posys.get(m_p[0]);
-        moment = m_p[0];   
-     }  
     }
     
     void set_player_info(String f, String l, int jnum, String pos)
@@ -60,18 +67,31 @@ class Player{
     
     void mousePressed()
     {
-        //if (value == 0) {
-        //  value = 255;
-        //} else {
-        //  value = 0;
-        //}
-      
+      if (overEvent()) {
+        over = true;
+      } else {
+        over = false;
+      }
+      if(over)
+      {
+        r = 100;
+        g = 100;
+        b = 100;
+      }
     }
+    
+   boolean overEvent() {
+    if (mouseX > px && mouseX < px+ 9 &&
+       mouseY > py && mouseY < py+9) {
+      return true;
+    } else {
+      return false;
+    }
+  }
    
     
    void display()
    {
-
      beginShape();
      stroke(255);
      strokeWeight(1);

@@ -225,7 +225,7 @@ void initialize_event(Game game, String eventid, Event event)
         {
           if(row.getInt(TEAMID) == game.visitorteamid)
           {
-            if(event.home.get(row.getInt(PLAYERID)) == null)
+            if(event.visitor.get(row.getInt(PLAYERID)) == null)
             {
               Player v = new Player();
             //  println(row.getInt(PLAYERID));
@@ -242,7 +242,7 @@ void initialize_event(Game game, String eventid, Event event)
               event.visitor.put(row.getInt(PLAYERID), v);
             } 
 
-            //println(posxs.row
+            //println("player id: " + row.getInt(PLAYERID));
             event.visitor.get(row.getInt(PLAYERID)).posxs.add(row.getFloat(XPOS));
             event.visitor.get(row.getInt(PLAYERID)).posys.add(row.getFloat(YPOS));
 
@@ -298,7 +298,6 @@ void keyPressed()
  {
      
      println("POOP");
-     initialize_event(curr_game, curr_id, curr_event);
      println("meep");
      state = 2;
  }
@@ -360,9 +359,16 @@ void draw()
          curr_game.draw_game();
          //println("h players " + curr_event.home.size());
          //println("v players " + curr_event.visitor.size());
-         println(curr_event.home.get(200794).posxs.size());
-         //curr_event.draw_game_event(m_p);
          
+          draw_event(m_p);
     }
   }
+}
+
+void draw_event(int[] m_p)
+{
+    println("1"); 
+    initialize_event(curr_game, curr_id, curr_event);
+    println("2");
+    curr_event.draw_game_event(m_p);         
 }
