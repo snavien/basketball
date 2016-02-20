@@ -195,10 +195,10 @@ void initialize_event(Game game, String eventid, Event event)
           if(event.home.get(row.getInt(PLAYERID)) == null)
           {
             Player h = new Player();
-            println(row.getInt(PLAYERID));
+           // println(row.getInt(PLAYERID));
            
             h.playerid = row.getInt(PLAYERID);
-            println(h.playerid);
+            //println(h.playerid);
             get_info(h.playerid);
             h.set_player_info((all_players.get(h.playerid)).fname, 
                                (all_players.get(h.playerid)).lname, 
@@ -223,10 +223,10 @@ void initialize_event(Game game, String eventid, Event event)
             if(event.home.get(row.getInt(PLAYERID)) == null)
             {
               Player v = new Player();
-              println(row.getInt(PLAYERID));
+            //  println(row.getInt(PLAYERID));
              
               v.playerid = row.getInt(PLAYERID);
-              println(v.playerid);
+              //println(v.playerid);
               get_info(v.playerid);
               v.set_player_info((all_players.get(v.playerid)).fname, 
                                  (all_players.get(v.playerid)).lname, 
