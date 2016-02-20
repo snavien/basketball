@@ -32,6 +32,7 @@ class Ball{
    }
    // Custom method for updating the variables
    void update(int m_p[]) {
+     print("1");
      if(m_p[1] == 0)
      {
       if(moment < 1011)

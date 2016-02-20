@@ -257,7 +257,6 @@ void initialize_event(Game game, String eventid, Event event)
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
- // println("home " + home.get(0).name);
   event.set_ball(ball);
 }
 
