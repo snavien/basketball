@@ -121,7 +121,7 @@ void populate_events(Game game, ArrayList<Game> games)
   
 }
 
-void initialize_event(Game game, String eventid)
+Event initialize_event(Game game, String eventid)
 {
   Player [] home = new Player[5],
             visitor = new Player[5];
@@ -233,6 +233,8 @@ void initialize_event(Game game, String eventid)
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
+  Event e = new Event(ball, home, visitor, eventid);
+  return e;
  
 }
 
@@ -270,8 +272,10 @@ void keyPressed()
  if(keyCode == ' ')
  {
      state = 2;
-  }
+     curr_event = initialize_event(curr_game, curr_id);
+
  }
+ 
 
  
 }
@@ -332,6 +336,7 @@ void draw()
          break;
        case 2:
          curr_game.draw_game();
+         curr_event.draw_game_event();
          
     }
   }
