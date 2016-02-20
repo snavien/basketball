@@ -58,6 +58,17 @@ class Player{
        position = pos;
     }
     
+    void mousePressed()
+    {
+        //if (value == 0) {
+        //  value = 255;
+        //} else {
+        //  value = 0;
+        //}
+      
+    }
+   
+    
    void display()
    {
 

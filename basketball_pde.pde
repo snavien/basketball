@@ -208,12 +208,17 @@ void initialize_event(Game game, String eventid, Event event)
                                
             event.home.put(row.getInt(PLAYERID), h);
           } 
-          println(event.home.get(row.getInt(PLAYERID)).fname);
+          //println(event.home.get(row.getInt(PLAYERID)).fname);
           
-          println(row.getFloat(XPOS));
+          //println(row.getFloat(XPOS));
           
           event.home.get(row.getInt(PLAYERID)).posxs.add(row.getFloat(XPOS));
-          
+          //println(event.home.get(row.getInt(PLAYERID)).fname);
+
+          //for(Object o: event.home.get(row.getInt(PLAYERID)).posxs)
+          //{
+          //  println("!" + o); 
+          //}
           event.home.get(row.getInt(PLAYERID)).posys.add(row.getFloat(YPOS));
         }
         else
@@ -246,6 +251,7 @@ void initialize_event(Game game, String eventid, Event event)
     }
   }
 
+  println("went through");
   
   double max_height = Collections.max(ball_heights);
 
@@ -290,9 +296,11 @@ void keyPressed()
  
  if(keyCode == ' ')
  {
-     state = 2;
+     
+     println("POOP");
      initialize_event(curr_game, curr_id, curr_event);
-
+     println("meep");
+     state = 2;
  }
 }
 
@@ -352,7 +360,8 @@ void draw()
          curr_game.draw_game();
          //println("h players " + curr_event.home.size());
          //println("v players " + curr_event.visitor.size());
-         curr_event.draw_game_event(m_p);
+         println(curr_event.home.get(200794).posxs.size());
+         //curr_event.draw_game_event(m_p);
          
     }
   }
