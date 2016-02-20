@@ -150,6 +150,7 @@ void populate_events(Game game)
 
 void initialize_event(Game game, String eventid, Event event)
 {
+  print("is it here?");
   
   Ball ball;
   ArrayList<Double> bpx,
@@ -303,6 +304,8 @@ void keyPressed()
 }
 
 String curr_id;
+int [] m_p = {0,0};
+
 void draw() 
 {
   if(game_index >= 0 && game_index <= 81)
@@ -352,10 +355,7 @@ void draw()
 
          break;
        case 2:
-         int [] m_p = {0,0};
-         hs1.update(m_p);
-         hs1.display();
-         curr_game.draw_game();
+
          
          //println("h players " + curr_event.home.size());
          //println("v players " + curr_event.visitor.size());
@@ -363,7 +363,19 @@ void draw()
           noLoop();
           initialize_event(curr_game, curr_id, curr_event);
           loop();
+          state = 3;
+
+       
           curr_event.draw_game_event(m_p);    
+          break;
+       case 3:
+          loop();
+           hs1.update(m_p);
+           curr_game.draw_game();
+
+          hs1.display();
+          curr_event.draw_game_event(m_p);
+          break;
     }
   }
 }
