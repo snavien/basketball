@@ -1,4 +1,16 @@
 //TODO: Map moment to players and ball
+//PSUDO ENUMS FOR EVENT COLUMNS
+static final int GAMEID    = 0; 
+static final int TEAMID    = 1;
+static final int PLAYERID  = 2;
+static final int XPOS      = 3;
+static final int YPOS      = 4;
+static final int HEIGHT    = 5;
+static final int MOMENT    = 6;
+static final int GAMECLOCK = 7;
+static final int SHOTCLOCK = 8; 
+static final int PERIOD    = 9;
+
 
 Game curr_game;
 Event curr_event;
@@ -31,13 +43,31 @@ void setup()
   state = 0;
   games = new ArrayList<Game>();
   load_games();
-  
-  playerstable = loadTable("players.csv", "header");       // list of teams
+  get_info();
   surface.setResizable(true);
+  all_players = new HashMap<Integer, Player>();
 
   hs1 = new HScrollbar(0, height - 30, width, 16, 16);
 }
 
+HashMap<Integer, Player> all_players;
+void get_info()
+{
+ Table playerstable = new Table();
+ playerstable = loadTable("players.csv", "header");   //load an event
+  
+ for(TableRow row : playerstable.rows())
+ {
+   Player p = new Player();
+   p.set_player_info(row.getString("firstname"), 
+                         row.getString("lastname"),
+                         row.getInt("jerseynumber"),
+                         row.getString("position"));
+   //all_players.put(row.getInt("playerid"), p);
+   
+   
+ }
+}
 void load_games()
 {
   //PROCESS DATA
@@ -72,9 +102,6 @@ void load_games()
       }
     }
     
-    //println("gameid: " + gameid);
-    //println(ht_name);
-    //println(vt_name);
     Game game = new Game(gameid,hometeamid,visitorteamid,ht_name,ht_abbr,vt_name,vt_abbr, game_date);
     games.add(game);
   }
@@ -83,8 +110,6 @@ void load_games()
 
 void populate_events(Game game)
 {  
-  //println(dataPath(""));
-  print("!");
   File dir = new File(dataPath("") + "/games/00" + game.gameid+"/");
   //println(dir);
   String eventid;
@@ -158,17 +183,29 @@ Event initialize_event(Game game, String eventid)
        print("Llakdsjfakldjsf");
        if (tid == game.hometeamid && hct <= 4) 
        {
-         home.add(new Player(playerx, playery, 0, 255, 0, 0));
+         Player h = new Player(playerx, playery, 0, 255, 0, 0, row.getInt(PLAYERID));
+         h.set_player_info((all_players.get(h.playerid)).fname, 
+                           (all_players.get(h.playerid)).lname, 
+                           (all_players.get(h.playerid)).jersey_num,
+                           all_players.get(h.playerid).position);
+
+         home.add(h);
          hct++;
        }
        if(tid == game.visitorteamid && vct <= 4)
        {
-         visitor.add(new Player(playerx, playery, 0, 0, 0, 255));
+         Player v = new Player(playerx, playery, 0, 255, 0, 0, row.getInt(PLAYERID));
+         v.set_player_info((all_players.get(v.playerid)).fname, 
+                 (all_players.get(v.playerid)).lname, 
+                 (all_players.get(v.playerid)).jersey_num,
+                 all_players.get(v.playerid).position);
+
+         visitor.add(v);
          vct++;
        }
      }
   }
-  
+
   
   for (TableRow row : eventstable.rows()) 
   {     
@@ -188,9 +225,10 @@ Event initialize_event(Game game, String eventid)
       }
       moment_cnt++;
     }
-    if (row.getInt(1) != -1 && row.getInt(2) != -1)            //ball is not there, want moment to be -1
+    if (row.getInt(1) != -1 && row.getInt(PLAYERID) != -1)            //ball is not there, want moment to be -1
     {
-      pids.add(row.getInt(2)); // add player ids
+      //println("PLAYERID :" + row.getInt(PLAYERID));
+      pids.add(row.getInt(PLAYERID)); // add player ids
     }
   }
   Iterator<Integer> it = pids.iterator();
@@ -207,21 +245,33 @@ Event initialize_event(Game game, String eventid)
         playery.add(row.getFloat(4));
         tid = row.getInt(1);
       }
-    }
-    
-    if (tid == game.hometeamid && hct <= 4) {
+   
+      if (tid == game.hometeamid && hct <= 4) {
+        Player h = new Player(playerx, playery, 0, 255, 0, 0, curr);
+        //println(h.playerid);
+        println(curr);
+         h.set_player_info((all_players.get(h.playerid)).fname, 
+                   (all_players.get(h.playerid)).lname, 
+                   (all_players.get(h.playerid)).jersey_num,
+                   all_players.get(h.playerid).position);
 
-      home.add(new Player(playerx, playery, 0, 255, 0, 0));
-      hct++;
-    } 
-    if(tid == game.visitorteamid) 
-    {
-    
-      visitor.add(new Player(playerx, playery, 0, 0, 0, 255));
-      vct++;
-      
+        home.add(h);
+        hct++;
+      } 
+      if(tid == game.visitorteamid && vct <= 4) 
+      {
+        Player v = new Player(playerx, playery, 0, 255, 0, 0, curr);
+        v.set_player_info((all_players.get(v.playerid)).fname, 
+                 (all_players.get(v.playerid)).lname, 
+                 (all_players.get(v.playerid)).jersey_num,
+                 all_players.get(v.playerid).position);
+
+        visitor.add(v);
+        vct++;
+        
+      }
     }
-    println("h: " + hct + " v " + vct); 
+    //println("h: " + hct + " v " + vct); 
     
     curr = it.next();
   }while(it.hasNext());
@@ -234,34 +284,47 @@ Event initialize_event(Game game, String eventid)
       playery.add(row.getFloat(4));
       tid = row.getInt(1);
     }
-  }
   
-  if (tid == game.hometeamid && hct <= 4) {
+  
+    if (tid == game.hometeamid && hct <= 4) {
+  
+      Player h = new Player(playerx, playery, 0, 255, 0, 0, curr);
+      h.set_player_info((all_players.get(h.playerid)).fname, 
+                   (all_players.get(h.playerid)).lname, 
+                   (all_players.get(h.playerid)).jersey_num,
+                   all_players.get(h.playerid).position);
 
-    Player h = new Player(playerx, playery, 0, 255, 0, 0);
-    home.add(h);
-    hct++;
-  } 
-  if(tid == game.visitorteamid) 
-  {
-    Player v = new Player(playerx, playery, 0, 255, 0, 0);
-    visitor.add(v);
-    vct++;
-    
+      home.add(h);
+      hct++;
+    } 
+    if(tid == game.visitorteamid) 
+    {
+      Player v = new Player(playerx, playery, 0, 255, 0, 0, curr);
+      v.set_player_info((all_players.get(v.playerid)).fname, 
+         (all_players.get(v.playerid)).lname, 
+         (all_players.get(v.playerid)).jersey_num,
+         all_players.get(v.playerid).position);
+
+      visitor.add(v);
+      vct++;
+      
+    }
   }
-  println("h: " + hct + " v " + vct); 
+  //println("h: " + hct + " v " + vct); 
 
   //println("ball heights: " + ball_heights.size());
   double max_height = Collections.max(ball_heights);
 
   ball = new Ball(bpx, bpy, ball_heights, 0, max_height);
 
-  println("home " + home.get(0).name);
+ // println("home " + home.get(0).name);
 
   Event e = new Event(ball, home, visitor, eventid);
   return e;
  
 }
+
+
 
 void keyPressed()
 {
@@ -276,14 +339,14 @@ void keyPressed()
  if(game_index >= 0 && game_index <= 81)
  {
    curr_game = games.get(game_index);
-   print(curr_game.ht_abbr);
+   //print(curr_game.ht_abbr);
 
  }
  if(keyCode == ENTER && state == 0)
  {
     state = 1;
    
-    print("!");
+    //print("!");
  }
  if(keyCode == UP)
  {
@@ -356,8 +419,8 @@ void draw()
          hs1.update(m_p);
          hs1.display();
          curr_game.draw_game();
-         println("h players " + curr_event.home.size());
-         println("v players " + curr_event.visitor.size());
+         //println("h players " + curr_event.home.size());
+         //println("v players " + curr_event.visitor.size());
          curr_event.draw_game_event(m_p);
          
     }

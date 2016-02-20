@@ -45,7 +45,8 @@ class Ball{
         moment++;  
       }
      }
-     else{
+     else
+     {
         if(ball_px.get(m_p[0]) != (double)(-1.0))
         {
           x = ball_px.get(m_p[0]);

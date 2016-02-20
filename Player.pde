@@ -3,9 +3,17 @@ class Player{
    ArrayList<Float> posxs, posys;
    float px, py;
    int moment, playerid, offx, offy;
-   String name;
+   String fname, lname, name;
    int r, g, b;
-   Player(ArrayList<Float> pxs, ArrayList<Float> pys, int m, int red, int green, int blue){
+   
+   int jersey_num; String position;
+   
+   Player(){
+     
+        }
+   
+   Player(ArrayList<Float> pxs, ArrayList<Float> pys, int m, 
+   int red, int green, int blue, int id){
      moment = m;
      posxs = pxs;
      posys = pys;
@@ -16,6 +24,7 @@ class Player{
      r = red;
      g = green;
      b = blue;
+     playerid = id;
    }
    // Custom method for updating the variables
     void update(int m_p[]) {
@@ -36,7 +45,17 @@ class Player{
         moment = m_p[0];   
      }  
     }
-   void display(){
+    
+    void set_player_info(String f, String l, int jnum, String pos)
+    {
+       fname = f;
+       lname = l;
+       name = f + " " + l; 
+       jersey_num = jnum;
+       position = pos;
+    }
+   void display()
+   {
 
      beginShape();
      stroke(255);

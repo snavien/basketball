@@ -28,7 +28,7 @@ class HScrollbar {
     } else {
       over = false;
     }
-    if (mousePressed) {
+    if (mousePressed && over) {
       m_p[0] = mouseX * (1100/swidth);
  
       m_p[1] = 1;
